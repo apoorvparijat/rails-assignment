@@ -1,4 +1,6 @@
 require_relative 'menu'
+
+# Represents a Hotel with a Menu
 class Hotel
 
 	attr_accessor :menu

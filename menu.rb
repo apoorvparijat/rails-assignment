@@ -1,5 +1,6 @@
 require_relative 'item'
 
+# Represent's a Hotel Menu which has list of Items served.
 class Menu
     include Enumerable
     attr_accessor :menu_items
@@ -22,14 +23,17 @@ class Menu
         end
     end
 
+    # returns with array of Item objects which have the dish
     def get_items_with dish
         @menu_items.select {|item| item.has? dish}
     end
 
+    # converts Menu to representable String format
     def to_s
         @menu_items.collect {|i| i.to_s}.to_a.join "\n"
     end
 
+    # checks if Menu is empty
     def empty?
         @menu_items.empty?
     end

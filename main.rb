@@ -2,6 +2,7 @@ require_relative 'hotel'
 require_relative 'item'
 require_relative 'menu'
 
+# Collections of Hotel objects. Responsible for reading data from input file.
 class Hotels
 
 	# reads csv from files and initializes @hotels Hash with hotels

@@ -1,3 +1,4 @@
+# Represents Items on a Hotel Menu
 class Item
     include Enumerable
     include Comparable
@@ -5,7 +6,7 @@ class Item
     # @price stores the cost of this item
     # Since an item on hotel menu can have many dishes, dishes are stored in @dishes array
     attr_accessor :price, :dishes
-    
+
     def initialize hotel_id
         @dishes = Array.new
         @price = 0.0
