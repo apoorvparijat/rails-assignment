@@ -3,8 +3,9 @@ class Item
     include Comparable
 
     # @price stores the cost of this item
-    # Since an item on hotel menu can have many dishes
+    # Since an item on hotel menu can have many dishes, dishes are stored in @dishes array
     attr_accessor :price, :dishes
+    
     def initialize hotel_id
         @dishes = Array.new
         @price = 0.0

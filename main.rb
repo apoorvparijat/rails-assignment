@@ -4,13 +4,13 @@ require_relative 'menu'
 
 class Hotels
 
+	# reads csv from files and initializes @hotels Hash with hotels
 	def initialize
 		@hotels = Hash.new
 		begin
 			f = File.open ARGV[0]
 			headers = f.gets
 			f.each_with_index do |line,index|
-				# puts "adding #{line}"
 				parse_and_create_hotel line if validate line
 			end
 			f.close
@@ -19,7 +19,7 @@ class Hotels
 		end
 	end
 
-	# validates the cvs row
+	# checks formatting of csv_row
 	def validate csv_row
 		csv_row.strip != ""
 	end
@@ -42,6 +42,7 @@ class Hotels
 
 	end
 
+	# prints all hotels and their menu
 	def to_s
 		@hotels.each do |k,v|
 			puts "------------------------ Hotel #{k} ------------------------"
@@ -50,6 +51,7 @@ class Hotels
 		end
 	end
 
+	# return new Menu object containing 'items' which have the 'dish'
 	def get_items_serving dish
 		new_menu = Menu.new
 		@hotels.each do |hotel_id,hotel|
@@ -58,6 +60,27 @@ class Hotels
 		end
 		new_menu
 	end
+
+	# returns cheapest and most value for money hotel for the 'dish'
+	def recommended_hotel_for dish
+		new_menu = get_items_serving dish
+		if new_menu.empty?
+			puts "No hotel found."
+			return nil
+		end
+		puts "\nFollowing hotels found serving '#{dish}' \n"
+		puts new_menu.sort
+
+		puts "\nRecommended hotel - "
+		cheapest_price = new_menu.sort.first.price
+		cheapest_items = new_menu.select {|item| cheapest_price == item.price}
+		if cheapest_items.length > 1 
+			value_for_money = cheapest_items.max {|a,b| a.dishes.length <=> b.dishes.length}
+			return value_for_money
+		else
+			return cheapest_items
+		end
+	end
 end
 
 all_hotels = Hotels.new
@@ -65,21 +88,5 @@ all_hotels.to_s
 
 print "Enter dish: \n"
 dish = $stdin.gets.strip
-new_menu = all_hotels.get_items_serving dish
-
-if new_menu.empty?
-	puts "No hotel found."
-	exit
-end
-puts "\nFollowing hotels found serving '#{dish}' \n"
-puts new_menu.sort
-
-puts "\nRecommended - "
-cheapest = new_menu.sort.first.price
-cheap = new_menu.select {|item| cheapest == item.price}
-if cheap.length > 1 
-	value_for_money = cheap.max {|a,b| a.dishes.length <=> b.dishes.length}
-	puts value_for_money
-else
-	puts cheap
-end
+recommended_item = all_hotels.recommended_hotel_for dish
+puts recommended_item
