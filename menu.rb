@@ -1,52 +1,37 @@
-class Item
-    include Enumerable
-    include Comparable
-    attr_accessor :price
-    def initialize
-        @dishes = Array.new
-        @price = 0.0
-    end
-    def << dish
-        @dishes << dish
-    end
-    def each
-        @dishes.each do |dish|
-            yield dish
-        end
-    end
-    def <=> other
-        @price <=> other.price
-    end
-    def to_s
-        @dishes.to_s
-        "Price: #{@price} - #{@dishes.to_s}"
-    end
-end
+require_relative 'item'
 
 class Menu
     include Enumerable
+    attr_accessor :menu_items
+
+    # initializes Menu object. 
+    # @menu_items stores the items on the hotel menu
     def initialize
         @menu_items = Array.new
     end
+
+    # pushes new Item object to @menu_times
     def << items
         @menu_items << items
     end
+
+    # loops through @menu_items
     def each
         @menu_items.each do |items|
             yield items 
         end
     end
-    def to_s
-        @menu_items.collect {|i| i.to_s}
-    end
-end
 
-i = Item.new
-i << "Burger" << "Ice cream"
-i.price = 14.0
-i2 = Item.new
-i2 << "Coke"
-i2.price = 10.0
-m = Menu.new
-m << i << i2
-puts m.sort
+    def get_items_with dish
+        @menu_items.select {|item| item.has? dish}
+    end
+
+    def to_s
+        @menu_items.collect {|i| i.to_s}.to_a.join "\n"
+    end
+
+    def empty?
+        @menu_items.empty?
+    end
+
+end
